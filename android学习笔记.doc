@@ -3,3 +3,8 @@
 android网络框架:
 1.OkHttp:
 	基本使用-http://blog.csdn.net/iispring/article/details/51661195
+	官方文档-https://github.com/square/okhttp/wiki/Calls
+	基本原理分析-http://blog.csdn.net/evan_man/article/details/51173810
+			   -http://blog.csdn.net/evan_man/article/details/51180863
+			   -http://blog.csdn.net/evan_man/article/details/51182087
+			   -http://blog.csdn.net/evan_man/article/details/51204469
