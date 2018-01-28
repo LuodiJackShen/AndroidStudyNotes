@@ -8,3 +8,12 @@ android网络框架:
 			   -http://blog.csdn.net/evan_man/article/details/51180863
 			   -http://blog.csdn.net/evan_man/article/details/51182087
 			   -http://blog.csdn.net/evan_man/article/details/51204469
+2.Xutils:
+	基本使用-http://blog.csdn.net/true100/article/details/51734217
+	官方示例-见github
+
+
+疑难小问题:
+1.retrofit使用post把数据传给服务端时出现中文乱码的问题
+解决方案-添加头部如下:
+@Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
