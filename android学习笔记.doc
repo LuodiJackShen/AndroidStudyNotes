@@ -1,6 +1,6 @@
 ﻿为了成为一名合格的android开发者,今天起开始坚持记录学习笔记.
 
-android网络框架:
+android框架:
 1.OkHttp:
 	基本使用-http://blog.csdn.net/iispring/article/details/51661195
 	官方文档-https://github.com/square/okhttp/wiki/Calls
@@ -20,5 +20,9 @@ android网络框架:
 
 2.在浏览其查看android内部数据：
 debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+
+3.在使用xutils操作数据库的时候，bean必须加上空构造函数，否则不能创建数据库。
+
+4.在使用xutils绑定view的时候，方法名必须是private的，否则绑定不了view。
 
 
