@@ -28,3 +28,68 @@ debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 5.实现聊天界面的时候，使用recyclerview显示消息列表，当打开输入法的时候，recyclerview并不能滑动到底部。
 解决方案：mLayoutManager.setStackFromEnd(true);
 
+6.android api>=24的手机拍照问题解决方案：
+private void takePicture() {
+        mCurrentPicName = System.currentTimeMillis() + ".png";
+        File currentPic = new File(mLogDirectory, mCurrentPicName);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri imageUri;
+        if (Build.VERSION.SDK_INT >= 24) {
+            imageUri = FileProvider.getUriForFile(this,
+                    "com.jicq.provider", currentPic);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            imageUri = Uri.fromFile(currentPic);
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, REQUEST_CODE_CAPTURE);
+}
+相应的打开图片浏览器：
+/***
+     * 打开系统自带的图片浏览器，进行图片浏览操作。
+     * @param picPath 图片的绝对路径。
+     */
+    private void openImageBrowser(String picPath) {
+        if (Build.VERSION.SDK_INT < 24) {
+            Uri imageUri;
+            if (picPath.startsWith("content://")) {
+                imageUri = Uri.parse(picPath);
+            } else {
+                imageUri = Uri.parse("file://" + picPath);
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(imageUri, "image/*");
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = FileProvider.getUriForFile(this,
+                    "com.jicq.provider", new File(picPath));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(uri, "image/*");
+            startActivity(intent);
+        }
+    }
+
+7.将相册里的Uri转为String格式的路径
+/**
+ * 将相册里的Uri转为String格式的路径
+ *
+ * @param uri 资源定位地址
+ * @return String格式路径
+ */
+private String getPathFromUri(Uri uri) {
+    String path = "";
+    String[] projection = {MediaStore.Images.Media.DATA};
+    ContentResolver resolver = getContentResolver();
+    Cursor cursor = resolver.query(uri, projection, null,
+            null, null);
+    if (cursor != null) {
+        cursor.moveToFirst();
+        path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+    }
+    return path;
+}
+
+
+
