@@ -25,4 +25,6 @@ debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 
 4.在使用xutils绑定view的时候，方法名必须是private的，否则绑定不了view。
 
+5.实现聊天界面的时候，使用recyclerview显示消息列表，当打开输入法的时候，recyclerview并不能滑动到底部。
+解决方案：mLayoutManager.setStackFromEnd(true);
 
