@@ -149,5 +149,6 @@ private Intent buildCropIntent(Uri imageUri) {
     return intent;
 }
 
-
+9.使用xutils绑定图片的时候，如果设置图片是圆形的，则部分机型会出现黑色背景，解决方案：
+在ImageDecoder.java 589行 将thumbBitmap.compress(supportWebP ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.PNG, 80, out); 更改为thumbBitmap.compress( Bitmap.CompressFormat.PNG, 80, out); 即可
 
