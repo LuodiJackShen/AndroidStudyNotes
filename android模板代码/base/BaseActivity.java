@@ -26,6 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+	//xml must write it: android:fitsSystemWindows="true"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Integer color = getResources().getColor(R.color.base_color);
             if (color != null) {
