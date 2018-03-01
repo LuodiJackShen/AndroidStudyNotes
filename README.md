@@ -1,2 +1,2 @@
 # AndroidStudyNotes
-android学习笔记.
+android学习笔记及一些模板代码。
