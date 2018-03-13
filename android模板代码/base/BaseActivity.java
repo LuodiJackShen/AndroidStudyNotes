@@ -26,24 +26,39 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-	//xml must write it: android:fitsSystemWindows="true"
+		Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Integer color = getResources().getColor(R.color.base_color);
-            if (color != null) {
-                getWindow().setStatusBarColor(color);
-            } else {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.base_red));
+        } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            ViewGroup systemContent = (ViewGroup) findViewById(android.R.id.content);
+            View statusBarView = new View(this);
+            ViewGroup.LayoutParams lp =
+                    new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            getStatusBarHeight()
+                    );
+            statusBarView.setBackgroundColor(getResources().getColor(R.color.base_red));
+            systemContent.getChildAt(0).setFitsSystemWindows(true);
+            systemContent.addView(statusBarView, 0, lp);
         }
 
         initView();
     }
 
+	 private int getStatusBarHeight() {
+        int height = 0;
+        //获取status_bar_height资源的ID
+        int resourceId = getResources()
+                .getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            //根据资源ID获取响应的尺寸值
+            height = getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
+    }
+	
     @LayoutRes
     protected abstract int getContentView();
 
