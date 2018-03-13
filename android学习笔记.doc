@@ -152,3 +152,38 @@ private Intent buildCropIntent(Uri imageUri) {
 9.使用xutils绑定图片的时候，如果设置图片是圆形的，则部分机型会出现黑色背景，解决方案：
 在ImageDecoder.java 589行 将thumbBitmap.compress(supportWebP ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.PNG, 80, out); 更改为thumbBitmap.compress( Bitmap.CompressFormat.PNG, 80, out); 即可
 
+/***
+     * 获取状态栏高度。
+     * @return
+     */
+    private int getStatusBarHeight() {
+        int height = 0;
+        //获取status_bar_height资源的ID
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            //根据资源ID获取响应的尺寸值
+            height = getResources().getDimensionPixelSize(resourceId);
+        }
+        return height;
+    }
+
+    /***
+     * 获取actionbar的高度。
+     * @param context
+     * @return
+     */
+    private int getActionbarHeight(Context context) {
+        int height = 0;
+        // Calculate ActionBar height
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true)) {
+            height = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+        }
+        return height;
+}
+
+1、	viepager下面如果放置fragment的话，在new fragment之前要先用fragmentmanager.findFragmentByxx找一下，否则会出现null。
+2、	在fragment使用getActivity获取的值可能为null，解决办法是在onAttachActivity方法里对activity重新赋值。
+3、	解绑广播的时候，要首先判断下广播是否为null
+4、	要慎用全局广播，尽量使用本地广播。
+
