@@ -1,7 +1,3 @@
-package com.jack.fasthelp.utils;
-
-import org.xutils.x;
-
 
 public final class DensityUtil {
 

@@ -186,4 +186,11 @@ private Intent buildCropIntent(Uri imageUri) {
 2、	在fragment使用getActivity获取的值可能为null，解决办法是在onAttachActivity方法里对activity重新赋值。
 3、	解绑广播的时候，要首先判断下广播是否为null
 4、	要慎用全局广播，尽量使用本地广播。
-
+5、重新导入依赖gradlew build --refresh-dependencies
+6、使输入法右下角显示“搜素”、“下一步”等：
+	单行显示的话：设置singleLine为true，再设置edittext的imeOptions。
+	多行显示的话：
+		et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        et.setHorizontallyScrolling(false);
+        et.setMaxLines(Integer.MAX_VALUE);
+        et.setImeOptions(EditorInfo.IME_ACTION_NEXT);
