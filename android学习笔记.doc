@@ -194,3 +194,11 @@ private Intent buildCropIntent(Uri imageUri) {
         et.setHorizontallyScrolling(false);
         et.setMaxLines(Integer.MAX_VALUE);
         et.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+	 设置监听：
+	  et.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                // TODO: 2018/4/4  
+                return true;
+            }
+            return false;
+        });
