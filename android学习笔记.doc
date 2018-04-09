@@ -202,3 +202,22 @@ private Intent buildCropIntent(Uri imageUri) {
             }
             return false;
         });
+7.自定义tablayout+viewpager不起作用或报空指针异常：
+			/***
+             * 下面的代码顺序不能改变：
+             * 1.在调用 headBar.setupWithViewPager 之前必须将所有的 Tab 加进 TabLayout 里面。
+             * 2.每个 Tab 的 customView 必须在 headBar.setupWithViewPager 之后调用，否则不起作用。
+             */
+            TabLayout headBar = findViewById(R.id.home_table_ly);
+            mHomeTab = headBar.newTab();
+            mLiveTab = headBar.newTab();
+            mNotificationTab = headBar.newTab();
+            mMessageTab = headBar.newTab();
+            mPager = findViewById(R.id.home_view_pager);
+            headBar.addTab(mHomeTab, 0);
+            headBar.addTab(mLiveTab, 1);
+            headBar.addTab(mNotificationTab, 2);
+            headBar.addTab(mMessageTab, 3);
+            mPager.setAdapter(new HomeViewPagerAdapter(getSupportFragmentManager()));
+            headBar.setupWithViewPager(mPager);
+			...对每一个tab进行setCustomView操作
