@@ -202,22 +202,65 @@ private Intent buildCropIntent(Uri imageUri) {
             }
             return false;
         });
-7.自定义tablayout+viewpager不起作用或报空指针异常：
+7.自定义tablayout+viewpager的坑：
 			/***
-             * 下面的代码顺序不能改变：
-             * 1.在调用 headBar.setupWithViewPager 之前必须将所有的 Tab 加进 TabLayout 里面。
-             * 2.每个 Tab 的 customView 必须在 headBar.setupWithViewPager 之后调用，否则不起作用。
-             */
-            TabLayout headBar = findViewById(R.id.home_table_ly);
-            mHomeTab = headBar.newTab();
-            mLiveTab = headBar.newTab();
-            mNotificationTab = headBar.newTab();
-            mMessageTab = headBar.newTab();
-            mPager = findViewById(R.id.home_view_pager);
-            headBar.addTab(mHomeTab, 0);
-            headBar.addTab(mLiveTab, 1);
-            headBar.addTab(mNotificationTab, 2);
-            headBar.addTab(mMessageTab, 3);
-            mPager.setAdapter(new HomeViewPagerAdapter(getSupportFragmentManager()));
-            headBar.setupWithViewPager(mPager);
+         * NOTE：
+         * 1.每个 Tab 的 customView 必须在 headBar.setupWithViewPager 之后调用，否则不起作用。
+         * 2.setupWithViewPager调用之后，先remove掉自动生成的tab，即：headBar.removeAllTabs()
+         *
+         * 原因:调用setupWithViewPager之后，TabLayout会执行这么一段代码：
+         *
+         * void populateFromPagerAdapter() {
+         *      removeAllTabs();
+         *
+         *      if (mPagerAdapter != null) {
+         *          final int adapterCount = mPagerAdapter.getCount();
+         *          for (int i = 0; i < adapterCount; i++) {
+         *                  addTab(newTab().setText(mPagerAdapter.getPageTitle(i)), false);
+         *          }
+         *
+         *\         // Make sure we reflect the currently set ViewPager item
+         *          if (mViewPager != null && adapterCount > 0) {
+         *              final int curItem = mViewPager.getCurrentItem();
+         *              if (curItem != getSelectedTabPosition() && curItem < getTabCount()) {
+         *                  selectTab(getTabAt(curItem));
+         *              }
+         *          }
+         *      }
+         *  }
+         */
+        mPager = findViewById(R.id.home_view_pager);
+        TabLayout headBar = findViewById(R.id.home_table_ly);
+        mPager.setAdapter(new HomeViewPagerAdapter(getSupportFragmentManager()));
+        headBar.setupWithViewPager(mPager);
+        headBar.removeAllTabs();
+
+        mHomeTab = headBar.newTab();
+        headBar.addTab(mHomeTab, 0);
+        mLiveTab = headBar.newTab();
+        headBar.addTab(mLiveTab, 1);
+        mNotificationTab = headBar.newTab();
+        headBar.addTab(mNotificationTab, 2);
+        mMessageTab = headBar.newTab();
+        headBar.addTab(mMessageTab, 3);
+
+        mHomeTab.setCustomView(R.layout.tab_custom_layout);
+        mHomeTab.getCustomView().findViewById(R.id.tab_iv)
+                .setBackground(getResources().getDrawable(R.drawable.tab_home_ico));
+        mHomeTab.getCustomView().findViewById(R.id.tab_iv).setSelected(true);
+
+        mLiveTab.setCustomView(R.layout.tab_custom_layout);
+        mLiveTab.getCustomView().findViewById(R.id.tab_iv)
+                .setBackground(getResources().getDrawable(R.drawable.tab_live_ico));
+        mLiveTab.getCustomView().findViewById(R.id.tab_iv).setSelected(false);
+
+        mNotificationTab.setCustomView(R.layout.tab_custom_layout);
+        mNotificationTab.getCustomView().findViewById(R.id.tab_iv)
+                .setBackground(getResources().getDrawable(R.drawable.tab_notification_ico));
+        mNotificationTab.getCustomView().findViewById(R.id.tab_iv).setSelected(false);
+
+        mMessageTab.setCustomView(R.layout.tab_custom_layout);
+        mMessageTab.getCustomView().findViewById(R.id.tab_iv)
+                .setBackground(getResources().getDrawable(R.drawable.tab_message_ico));
+        mMessageTab.getCustomView().findViewById(R.id.tab_iv).setSelected(false);
 			...对每一个tab进行setCustomView操作
