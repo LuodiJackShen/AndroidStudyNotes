@@ -264,3 +264,7 @@ private Intent buildCropIntent(Uri imageUri) {
                 .setBackground(getResources().getDrawable(R.drawable.tab_message_ico));
         mMessageTab.getCustomView().findViewById(R.id.tab_iv).setSelected(false);
 			...对每一个tab进行setCustomView操作
+
+8、tablelayout的一个tabrow里放置的view有背景但是显示不全或者tabrow里是一个textview，但是ecllipse=end不起作用，解决办法：
+	android:shrinkColumns="1"
+	android:stretchColumns="1"
