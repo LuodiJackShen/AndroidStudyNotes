@@ -268,3 +268,25 @@ private Intent buildCropIntent(Uri imageUri) {
 8、tablelayout的一个tabrow里放置的view有背景但是显示不全或者tabrow里是一个textview，但是ecllipse=end不起作用，解决办法：
 	android:shrinkColumns="1"
 	android:stretchColumns="1"
+
+9、设置activity全屏并隐藏下方的返回键：
+在style中设置
+   <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+在activity中设置：
+ private void setFullScreenUI() {
+        if (Build.VERSION.SDK_INT < 19) {
+            View v = this.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            View v = this.getWindow().getDecorView();
+            int options = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            v.setSystemUiVisibility(options);
+        }
+    }
