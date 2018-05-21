@@ -201,6 +201,7 @@ private Intent buildCropIntent(Uri imageUri) {
                 return true;
             }
             return false;
+
         });
 7.自定义tablayout+viewpager的坑：
 			/***
@@ -295,4 +296,7 @@ this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
             v.setSystemUiVisibility(options);
         }
     }
-
+20:解决surfaceview抗锯齿无效：
+//解决抗锯齿无效的
+mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
+每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
