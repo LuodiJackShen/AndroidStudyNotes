@@ -300,3 +300,5 @@ this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 //解决抗锯齿无效的
 mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
 每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
+21:android 8.0下载新版本无法安装：
+缺少权限：<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
