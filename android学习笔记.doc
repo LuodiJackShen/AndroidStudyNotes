@@ -268,3 +268,7 @@ private Intent buildCropIntent(Uri imageUri) {
 8、tablelayout的一个tabrow里放置的view有背景但是显示不全或者tabrow里是一个textview，但是ecllipse=end不起作用，解决办法：
 	android:shrinkColumns="1"
 	android:stretchColumns="1"
+9、动态的往radiogroup中添加radiobutton，代码设置margin不起作用：
+将LinearLayout.LayoutParams改成RadioGroup.LayoutParams，如下
+RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(width, width);
+params.rightMargin = margin;
