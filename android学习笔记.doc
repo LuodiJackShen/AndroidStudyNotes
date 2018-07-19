@@ -1,4 +1,4 @@
-﻿为了成为一名合格的android开发者,今天起开始坚持记录学习笔记.
+为了成为一名合格的android开发者,今天起开始坚持记录学习笔记.
 
 android框架:
 1.OkHttp:
@@ -201,6 +201,7 @@ private Intent buildCropIntent(Uri imageUri) {
                 return true;
             }
             return false;
+
         });
 7.自定义tablayout+viewpager的坑：
 			/***
@@ -272,3 +273,34 @@ private Intent buildCropIntent(Uri imageUri) {
 将LinearLayout.LayoutParams改成RadioGroup.LayoutParams，如下
 RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(width, width);
 params.rightMargin = margin;
+10、surfaceview黑屏
+构造函数中加上：
+this.setZOrderOnTop(true);
+this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
+9、设置activity全屏并隐藏下方的返回键：
+在style中设置
+   <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+在activity中设置：
+ private void setFullScreenUI() {
+        if (Build.VERSION.SDK_INT < 19) {
+            View v = this.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            View v = this.getWindow().getDecorView();
+            int options = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            v.setSystemUiVisibility(options);
+        }
+    }
+20:解决surfaceview抗锯齿无效：
+//解决抗锯齿无效的
+mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
+每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
+
