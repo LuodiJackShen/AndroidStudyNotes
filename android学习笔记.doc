@@ -304,3 +304,53 @@ this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
 每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
 
+21、屏幕适配新方案
+private static float sNonCompatDensity = 0;
+    private static float sNonCompatScaledDensity = 0;
+
+    /***
+     * 调用示例：
+     * @Override
+     * protected void onCreate(Bundle savedInstanceState) {
+     *      setCustomDensity();
+     *      super.onCreate(savedInstanceState);
+     *      ...
+     * }
+     * {@see https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA}
+     */
+    private void setCustomDensity() {
+        final DisplayMetrics appDisplayMetrics = getApplication().getResources().getDisplayMetrics();
+        final DisplayMetrics activityDisplayMetrics = getResources().getDisplayMetrics();
+
+        if (sNonCompatDensity == 0) {
+            sNonCompatDensity = appDisplayMetrics.density;
+            sNonCompatScaledDensity = appDisplayMetrics.scaledDensity;
+            getApplication().registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(Configuration newConfig) {
+                    if (newConfig != null && newConfig.fontScale > 0) {
+                        sNonCompatScaledDensity = getApplication().getResources()
+                                .getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {
+                    //nothing here.
+                }
+            });
+        }
+
+        final float targetDensity = appDisplayMetrics.widthPixels / 960;//960为设计图的宽度
+        final int targetDensityDpi = (int) (targetDensity * 160);
+        final float targetScaledDensity =
+                targetDensity * (sNonCompatScaledDensity / sNonCompatDensity);
+
+        appDisplayMetrics.density = targetDensity;
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+        appDisplayMetrics.scaledDensity = targetScaledDensity;
+
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
+    }
