@@ -1,4 +1,3 @@
-为了成为一名合格的android开发者,今天起开始坚持记录学习笔记.
 
 android框架:
 1.OkHttp:
@@ -341,7 +340,7 @@ private static float sNonCompatDensity = 0;
             });
         }
 
-        final float targetDensity = appDisplayMetrics.widthPixels / 960;//960为设计图的宽度
+        final float targetDensity = appDisplayMetrics.widthPixels / 960 / 2; //960为设计图的宽度，图片都是放在xhdpi所以要把设计图的宽度除以 2.
         final int targetDensityDpi = (int) (targetDensity * 160);
         final float targetScaledDensity =
                 targetDensity * (sNonCompatScaledDensity / sNonCompatDensity);
