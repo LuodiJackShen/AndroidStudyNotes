@@ -1,4 +1,3 @@
-为了成为一名合格的android开发者,今天起开始坚持记录学习笔记.
 
 android框架:
 1.OkHttp:
@@ -269,7 +268,10 @@ private Intent buildCropIntent(Uri imageUri) {
 8、tablelayout的一个tabrow里放置的view有背景但是显示不全或者tabrow里是一个textview，但是ecllipse=end不起作用，解决办法：
 	android:shrinkColumns="1"
 	android:stretchColumns="1"
-
+9、动态的往radiogroup中添加radiobutton，代码设置margin不起作用：
+将LinearLayout.LayoutParams改成RadioGroup.LayoutParams，如下
+RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(width, width);
+params.rightMargin = margin;
 10、surfaceview黑屏
 构造函数中加上：
 this.setZOrderOnTop(true);
@@ -302,3 +304,55 @@ mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
 每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
 21:android 8.0下载新版本无法安装：
 缺少权限：<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+21、屏幕适配新方案
+private static float sNonCompatDensity = 0;
+    private static float sNonCompatScaledDensity = 0;
+
+    /***
+     * 调用示例：
+     * @Override
+     * protected void onCreate(Bundle savedInstanceState) {
+     *      setCustomDensity();
+     *      super.onCreate(savedInstanceState);
+     *      ...
+     * }
+     * {@see https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA}
+     */
+    private void setCustomDensity() {
+        final DisplayMetrics appDisplayMetrics = getApplication().getResources().getDisplayMetrics();
+        final DisplayMetrics activityDisplayMetrics = getResources().getDisplayMetrics();
+
+        if (sNonCompatDensity == 0) {
+            sNonCompatDensity = appDisplayMetrics.density;
+            sNonCompatScaledDensity = appDisplayMetrics.scaledDensity;
+            getApplication().registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(Configuration newConfig) {
+                    if (newConfig != null && newConfig.fontScale > 0) {
+                        sNonCompatScaledDensity = getApplication().getResources()
+                                .getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {
+                    //nothing here.
+                }
+            });
+        }
+
+        final float targetDensity = appDisplayMetrics.widthPixels / 960 / 2; //960为设计图的宽度（单位是px）--xhdpi下，1dp = 2px,所以要除以 2.
+        final int targetDensityDpi = (int) (targetDensity * 160);
+        final float targetScaledDensity =
+                targetDensity * (sNonCompatScaledDensity / sNonCompatDensity);
+
+        appDisplayMetrics.density = targetDensity;
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+        appDisplayMetrics.scaledDensity = targetScaledDensity;
+
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
+    }
+
