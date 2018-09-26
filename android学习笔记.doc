@@ -302,6 +302,8 @@ this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 //解决抗锯齿无效的
 mCanvas.drawColor(Color.TRANSPARENT, android.graphics.PorterDuff.Mode.CLEAR);
 每次绘制前调用下此方法。surfaceview有自己的buffer，这行代码相当于清除buffer。
+21:android 8.0下载新版本无法安装：
+缺少权限：<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
 21、屏幕适配新方案
 private static float sNonCompatDensity = 0;
@@ -353,9 +355,11 @@ private static float sNonCompatDensity = 0;
         activityDisplayMetrics.densityDpi = targetDensityDpi;
         activityDisplayMetrics.scaledDensity = targetScaledDensity;
     }
+
 	
 23、recyclerview 只设置底部或者只设置顶部的fadingedge，直接继承recyclerview，重写下面的方法即可
     @Override
     protected float getTopFadingEdgeStrength() {
         return 0f;
     }
+
