@@ -353,3 +353,9 @@ private static float sNonCompatDensity = 0;
         activityDisplayMetrics.densityDpi = targetDensityDpi;
         activityDisplayMetrics.scaledDensity = targetScaledDensity;
     }
+	
+23、recyclerview 只设置底部或者只设置顶部的fadingedge，直接继承recyclerview，重写下面的方法即可
+    @Override
+    protected float getTopFadingEdgeStrength() {
+        return 0f;
+    }
