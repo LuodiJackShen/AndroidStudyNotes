@@ -363,3 +363,55 @@ private static float sNonCompatDensity = 0;
         return 0f;
     }
 
+24、动态改变checkbox选中、未选中状态下的文字颜色：
+<CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@drawable/text_color" />
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@android:color/holo_red_dark" android:state_checked="true" />
+    <item android:color="@android:color/black" android:state_checked="false" />
+</selector>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
