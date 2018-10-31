@@ -375,6 +375,8 @@ private static float sNonCompatDensity = 0;
     <item android:color="@android:color/black" android:state_checked="false" />
 </selector>
 
+25、子模块混淆文件的指定是通过consumerProguardFiles这个属性来指定的，并不是proguardFiles 属性，而且我们无需配置其他的选项，只
+需要配置consumerProguardFiles属性就可以。该属性表示在打包的时候会自动寻找该module下我们指定的混淆文件对代码进行混淆。
 
 
 
