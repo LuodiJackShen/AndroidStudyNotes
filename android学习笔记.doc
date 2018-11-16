@@ -378,9 +378,11 @@ private static float sNonCompatDensity = 0;
 25、子模块混淆文件的指定是通过consumerProguardFiles这个属性来指定的，并不是proguardFiles 属性，而且我们无需配置其他的选项，只
 需要配置consumerProguardFiles属性就可以。该属性表示在打包的时候会自动寻找该module下我们指定的混淆文件对代码进行混淆。
 
+26、flutter总statelesswidget的点击时间可以使用gesturedetecture，而statefulwidget的点击事件需要使用Listener
 
-
-
+27、嵌套fargment调用startactivityforresult的问题：
+fragment+viewpage（由fragment组成），viewpager 的fragment调用startactivityforresult时，viewpager的第二个fragment的onactivityresult不会被回调，
+可以使用getparentfragment.startActivityForResult，然后再viewpager 的父fragment的onactivityresult中手动调用特定的嵌套的fragment的onactivityresult方法。
 
 
 
