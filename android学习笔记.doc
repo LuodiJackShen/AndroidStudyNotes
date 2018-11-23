@@ -384,6 +384,12 @@ private static float sNonCompatDensity = 0;
 fragment+viewpage（由fragment组成），viewpager 的fragment调用startactivityforresult时，viewpager的第二个fragment的onactivityresult不会被回调，
 可以使用getparentfragment.startActivityForResult，然后再viewpager 的父fragment的onactivityresult中手动调用特定的嵌套的fragment的onactivityresult方法。
 
+28、dialogfragment能重写createDialog就别重写createView，如果代码处理dialog的关闭时机出现问题，就会引起空指针异常（onActivityCreated方法里的mDialog为空，
+一个原因可能是在oncreateview之前就调用了dismiss方法或者其他改变dialog状态的方法---比如在oncreate方法里直接或者间接的调用了dismiss方法）；
+
+29、'com.android.support:design:22.2.1'中的tablayout有问题，比如一个fragment中有tablayout时，如果这个fragment被重新加载进来（调用fragmentManager.begainTranstion().add()...），
+tablayout中的tab不会显示。
+
 
 
 
