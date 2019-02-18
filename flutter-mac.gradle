@@ -377,7 +377,7 @@ class FlutterPlugin implements Plugin<Project> {
                 if(!flutterSharedDir.exists()){
                     flutterSharedDir.mkdirs()
                 }
-                from "${flutterRoot}/bin/cache/artifacts/engine/drawin-x64"
+                from "${flutterRoot}/bin/cache/artifacts/engine/darwin-x64"
                 into "${intermediateDir}/flutter_shared"
                 include("icudtl.dat")
                 
