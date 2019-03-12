@@ -1,10 +1,13 @@
-package com.jack.fasthelp.utils;
+package com.mrd.flutterwangmasteryijia.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Jack
@@ -14,6 +17,41 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class ImageUtil {
+    public static String compressImage(String filePath, String dstDir) throws Exception {
+        if (filePath == null || filePath.isEmpty()) {
+            throw new IllegalArgumentException("filePath is empty or null !");
+        }
+
+        Bitmap bitmap = compressImageSize(filePath, 720, 1080);
+        bitmap = compressImageQuantity(bitmap);
+
+        File dirFile = new File(dstDir);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
+
+        String fileName = "crash_feedback" + System.currentTimeMillis() + ".jpg";
+        File dstFile = new File(dirFile, fileName);
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(dstFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        } finally {
+            try {
+                out.close();
+                bitmap.recycle();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return dstFile.getAbsolutePath();
+    }
+
     /**
      * 质量压缩方法
      *
@@ -23,18 +61,17 @@ public class ImageUtil {
     public static Bitmap compressImageQuantity(Bitmap image) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         // 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到out中
-        image.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        image.compress(Bitmap.CompressFormat.JPEG, 50, out);
         int options = 90;
 
-        // 循环判断如果压缩后图片是否大于400kb,大于继续压缩
-        while (out.toByteArray().length / 1024 > 400) {
+//         循环判断如果压缩后图片是否大于60kb,大于继续压缩
+        while (out.toByteArray().length / 1024 > 60) {
             out.reset(); // 重置out即清空out
-            // 这里压缩options%，把压缩后的数据存放到out中
             image.compress(Bitmap.CompressFormat.JPEG, options, out);
-            options -= 10;// 每次都减少10
-            if (options <= 20) {
+            if (options <= 10) {
                 break;
             }
+            options -= 10;// 每次都减少10
         }
         // 把压缩后的数据out存放到ByteArrayInputStream中
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
