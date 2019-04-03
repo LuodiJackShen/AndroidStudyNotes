@@ -390,7 +390,7 @@ fragment+viewpage（由fragment组成），viewpager 的fragment调用startactiv
 29、'com.android.support:design:22.2.1'中的tablayout有问题，比如一个fragment中有tablayout时，如果这个fragment被重新加载进来（调用fragmentManager.begainTranstion().add()...），
 tablayout中的tab不会显示。
 
-
+30、flutter改变状态栏文字颜色 SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
 
 
